@@ -10,8 +10,9 @@ check_code:
 black:
 	@black scripts/* diabetic_retinopathy_DL/*.py
 
+#NN: tests/*.py -> tests/test_*.py
 test:
-	@coverage run -m pytest tests/*.py
+	@coverage run -m pytest tests/test_*.py
 	@coverage report -m --omit="${VIRTUAL_ENV}/lib/python*"
 
 ftest:
