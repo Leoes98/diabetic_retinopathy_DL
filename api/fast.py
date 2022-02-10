@@ -73,7 +73,7 @@ class TensorflowLiteClassificationModel:
 def index():
     return {"greeting": "Working API"}
 
-@app.get("/predict")
+@app.post("/predict")
 def predict(img_file: UploadFile = File(...)):
     model_path = "model_edge.tflite"
     #labels = [1, 3, 2, 0]
