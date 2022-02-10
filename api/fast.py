@@ -27,7 +27,7 @@ class TensorflowLiteClassificationModel:
 
     def run_from_filepath(self, input_image):
         input_data_type = self._input_details[0]["dtype"]
-        """
+
         image = np.array(input_image.resize(
             (self.image_size, self.image_size)),
                          dtype=input_data_type)
@@ -36,7 +36,7 @@ class TensorflowLiteClassificationModel:
         image = np.array(np.resize(input_image,
             (self.image_size, self.image_size, 3)),
                          dtype=input_data_type)
-
+        """
         if input_data_type == np.float32:
             image = image / 255.
 
@@ -67,6 +67,7 @@ class TensorflowLiteClassificationModel:
         for i, probability in enumerate(probabilities):
             label_to_probabilities.append([self.labels[i], float(probability)])
         return sorted(label_to_probabilities, key=lambda element: element[1])
+        #return label_to_probabilities
 
 @app.get("/")
 def index():
@@ -74,9 +75,10 @@ def index():
 
 @app.get("/predict")
 def predict(img_file: UploadFile = File(...)):
-    model_path = "model_model-export_icn_tflite-dr_deep_model_v2_20220126044745-2022-01-29T21_41_28.325372Z_model.tflite"
-    labels = [1, 3, 2, 0]
+    model_path = "model_edge.tflite"
+    #labels = [1, 3, 2, 0]
+    labels = [2, 0, 4]
     model = TensorflowLiteClassificationModel(model_path, labels)
     input_image = Image.open(img_file.file)
-    label_probability = model.run_from_filepath(np.array((input_image)))
+    label_probability = model.run_from_filepath((input_image))
     return label_probability
